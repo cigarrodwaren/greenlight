@@ -14,6 +14,7 @@ import (
 	// package.  Note that we alias this import to the blank identifier, to stop the Go
 	// compiler complaining that the package isn't begin used.
 	_ "github.com/lib/pq"
+	"greenlight.example.org/internal/data"
 )
 
 // Declare a string containing the application version number. Later we'll
@@ -44,9 +45,11 @@ type config struct {
 // Define an application struct to hold the dependencies for our HTTP handlers, helpers,
 // and middleware. At the moment thsi only containings a copy of the config struct and a
 // logger, but it will grow to include a lot more as our build progresses.
+// Add a models field to hold our new Models struct.
 type application struct {
 	config config
 	logger *log.Logger
+	models data.Models
 }
 
 func main() {
@@ -92,9 +95,12 @@ func main() {
 
 	// Declare an instance of the application struct, containing the config struct and
 	// the logger.
+	// Use the data.NewModels() function to initialize a Models struct, passing in the
+	// connection pool as a parameter.
 	app := &application{
 		config: cfg,
 		logger: logger,
+		models: data.NewModels(db),
 	}
 
 	// Declare a HTTP server with some sensible timeout settings, which listen on the
