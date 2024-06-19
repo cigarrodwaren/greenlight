@@ -35,3 +35,14 @@ ALTER TABLE movies ADD CONSTRAINT genres_length_check CHECK (array_length(genres
 ALTER TABLE movies DROP CONSTRAINT IF EXISTS movies_runtime_check; 
 ALTER TABLE movies DROP CONSTRAINT IF EXISTS movies_year_check; 
 ALTER TABLE movies DROP CONSTRAINT IF EXISTS genres_length_check;
+
+
+curl -i localhost:4000/v1/movies/5
+
+
+# Update movie
+BODY='{"title":"Black Panther","year":2018,"runtime":"134 mins","genres":["sci-fi","action","adventure"]}'
+curl -X PUT -d "$BODY" localhost:4000/v1/movies/2
+
+# Get movie
+curl -i localhost:4000/v1/movies/2

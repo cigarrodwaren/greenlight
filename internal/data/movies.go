@@ -80,11 +80,58 @@ func (m *MovieModel) Get(id int64) (*Movie, error) {
 
 // Add a placeholder method for updating a specific record in the movies table.
 func (m *MovieModel) Update(movie *Movie) error {
-	return nil
+	// Declare the SQL query for updating the record and returning the new version
+	// number.
+	query := `UPDATE movies SET title = $1, year = $2, runtime = $3, genres = $4, 
+		version = version + 1 
+		WHERE id = $5 
+		RETURNING version`
+
+	// Create an args slice containing the values for the placeholder parameters.
+	args := []interface{}{
+		movie.Title,
+		movie.Year,
+		movie.Runtime,
+		pq.Array(movie.Genres),
+		movie.ID,
+	}
+
+	// Use the QueryRows method to execute the query, passing in the args slice as a
+	// variadic parameter and scanning the new version value into the movie struct.
+	return m.DB.QueryRow(query, args...).Scan(&movie.Version)
 }
 
 // Add a placeholder method for deleting a specific record from the movies table.
 func (m *MovieModel) Delete(id int64) error {
+	// Return an ErrRecordNotFound error if the movie ID is less that 1
+	if id < 1 {
+		return ErrRecordNotFound
+	}
+
+	// Construct the SQL query to delete the record.
+	query := `DELETE FROM movies WHERE id = $1`
+
+	// Execute the SQL query using the Exec() method, passing in the id variable as
+	// the value for placeholder parameter. The Exec() method returns a sql.Result
+	// object.
+	result, err := m.DB.Exec(query, id)
+	if err != nil {
+		return err
+	}
+
+	// Call the RowAffected() method on the sql.Result object to get the number of rows
+	// affected by the query.
+	rowAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	// If no rows were affected, we know that the movies table didn't contain a record
+	// with the provided ID at the moment we tried to delete it. In that case we
+	// return an ErrRecordNotFound error.
+	if rowAffected == 0 {
+		return ErrRecordNotFound
+	}
 	return nil
 }
 
