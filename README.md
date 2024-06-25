@@ -46,3 +46,7 @@ curl -X PUT -d "$BODY" localhost:4000/v1/movies/2
 
 # Get movie
 curl -i localhost:4000/v1/movies/2
+
+
+# Get list movies with filter, page size, sort type
+curl "localhost:4000/v1/movies?title=godfather&genres=crime,drama&page=1&page_size=5&sort=year"
