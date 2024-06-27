@@ -50,3 +50,9 @@ curl -i localhost:4000/v1/movies/2
 
 # Get list movies with filter, page size, sort type
 curl "localhost:4000/v1/movies?title=godfather&genres=crime,drama&page=1&page_size=5&sort=year"
+
+curl "localhost:4000/v1/movies?title=black+panther"
+
+curl "localhost:4000/v1/movies?genres=adventure"
+
+curl "localhost:4000/v1/movies?title=moana&genres=animation,adventure"
