@@ -62,3 +62,27 @@ curl "localhost:4000/v1/movies?title=moana&genres=animation,adventure"
 curl "localhost:4000/v1/movies?title=panther"
 
 curl "localhost:4000/v1/movies?title=the+club"
+
+# Adding Indexes serach full-text
+migrate create -seq -ext .sql -dir ./migrations add_movies_indexes
+migrate -path ./migrations -database $GREENLIGHT_DB_DSN up
+
+$greenlight=>\d movies
+                                        Table "public.movies"
+   Column   |            Type             | Collation | Nullable |              Default
+------------+-----------------------------+-----------+----------+------------------------------------
+ id         | bigint                      |           | not null | nextval('movies_id_seq'::regclass)
+ created_at | timestamp(0) with time zone |           | not null | now()
+ title      | text                        |           | not null |
+ year       | integer                     |           | not null |
+ runtime    | integer                     |           | not null |
+ genres     | text[]                      |           | not null |
+ version    | integer                     |           | not null | 1
+Indexes:
+    "movies_pkey" PRIMARY KEY, btree (id)
+    "movies_genres_idx" gin (genres)
+    "movies_title_idx" gin (to_tsvector('simple'::regconfig, title))
+Check constraints:
+    "genres_length_check" CHECK (array_length(genres, 1) >= 1 AND array_length(genres, 1) <= 5)
+    "movies_runtime_check" CHECK (runtime >= 0)
+    "movies_year_check" CHECK (year >= 1888 AND year::double precision <= date_part('year'::text, now()))
