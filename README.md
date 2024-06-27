@@ -56,3 +56,9 @@ curl "localhost:4000/v1/movies?title=black+panther"
 curl "localhost:4000/v1/movies?genres=adventure"
 
 curl "localhost:4000/v1/movies?title=moana&genres=animation,adventure"
+
+# Get list movies with full-text search Postgresql
+
+curl "localhost:4000/v1/movies?title=panther"
+
+curl "localhost:4000/v1/movies?title=the+club"
