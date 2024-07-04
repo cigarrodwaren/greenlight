@@ -92,3 +92,14 @@ Check constraints:
 
 curl "localhost:4000/v1/movies?sort=-title"
 curl "localhost:4000/v1/movies?sort=-runtime"
+
+# Paginating Lists
+
+/ Return the 5 records on page 1 (records 1-5 in the dataset)
+/v1/movies?page=1&page_size=5
+
+// Return the next 5 records on page 2 (records 6-10 in the dataset)
+/v1/movies?page=2&page_size=5
+
+// Return the next 5 records on page 3 (records 11-15 in the dataset)
+/v1/movies?page=3&page_size=5
