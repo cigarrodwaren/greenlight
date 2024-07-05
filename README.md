@@ -103,3 +103,6 @@ curl "localhost:4000/v1/movies?sort=-runtime"
 
 // Return the next 5 records on page 3 (records 11-15 in the dataset)
 /v1/movies?page=3&page_size=5
+
+// This URL must be surrounded with double-quotes to work correctly.
+curl "localhost:4000/v1/movies?page_size=2&page=2"
