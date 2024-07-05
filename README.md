@@ -106,3 +106,6 @@ curl "localhost:4000/v1/movies?sort=-runtime"
 
 // This URL must be surrounded with double-quotes to work correctly.
 curl "localhost:4000/v1/movies?page_size=2&page=2"
+
+
+# Returning Pagination Metadata
