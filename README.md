@@ -109,3 +109,8 @@ curl "localhost:4000/v1/movies?page_size=2&page=2"
 
 
 # Returning Pagination Metadata
+curl "localhost:4000/v1/movies?page=1&page_size=2"
+
+curl localhost:4000/v1/movies?genres=adventure
+
+curl localhost:4000/v1/movies?page=100
